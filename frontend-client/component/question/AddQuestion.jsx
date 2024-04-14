@@ -9,6 +9,9 @@ const AddQuestion = () => {
     const[newSubject, setNewSubject] = useState("")
     const[subjectOptions, setSubjectOptions] = useState([""])
 
+    useEffect(() =>{
+        fetchSubjects()
+    }, [])
 
 
     const fetchSubjects = async() =>{
@@ -21,7 +24,7 @@ const AddQuestion = () => {
         }
     }
     const handelAddChoice = async() =>{
-        const lastChoice = choice[choice.length -1]
+        const lastChoice = choices[choices.length -1]
         const lastChoiceLetter = lastChoice ? lastChoice.charAt(0) : "A"
         const newChoiceLetter = string.fromCharCode(lastChoiceLetter.charCodeAt(0) + 1)
         const newChoice = '${newChoiceLetter}.'
@@ -42,7 +45,7 @@ const AddQuestion = () => {
         setCorrectAnswers(correctAnswers.map((answer , i) => (i === index ? value : answer)))
     }
 
-    const handleCorrectAnswer = () =>{
+    const handleAddCorrectAnswer = () =>{
         setCorrectAnswers([...correctAnswers, ""])
     }
 
@@ -157,8 +160,99 @@ const AddQuestion = () => {
                                     <option value={"multiple"}>Multiple Answer</option>
                                 </select>
                             </div>
+                            <div className="mb-3">
+                                <label htmlFor="choices" className="form-label text-info">
+                                    Choices
+                                </label>
+                                {choices.map((choice, index) => (
+                                    <div key={index} className="input-group mb-3">
+                                        <input
+                                            type="text"
+                                            value={choice}
+                                            onChange={(e) => handleChoiceChange(index, e.target.value)}
+                                            className="form-control"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handelRemoveChoice(index)}
+                                            className="btn btn-outline-danger btn-sm">
+                                        Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={handelAddChoice}
+                                    className="btn btn-outline-primary btn-sm">
+                                    Add Choice
+                                </button>
+                            </div>
 
+                            {questionType === "single" && (
+                                <div className="mb-3">
+                                    <label htmlFor="answer" className="form-label text-info">
+                                        Correct Answer
+                                    </label>
+                                    <input
+                                        type="text"
+                                    //    id="correct-answer"
+                                        value={correctAnswers[0]}
+                                        onChange={(e) => handleCorrectAnswerchange(0, e.target.value)}
+                                        className="form-control"
+                                    />
+                                   
+                                </div>
+                            )}
 
+                            {questionType === "multiple" && (
+                                <div className="mb-3">
+                                    <label htmlFor="answer" className="form-label text-info">
+                                        Correct Answer
+                                    </label>
+                                    {correctAnswers.map((answer, index) => (
+                                        <div>
+                                            <input 
+                                            type="text" 
+                                            value={answer}
+                                            onChange={(e) => handleCorrectAnswerchange(index, e.target.value)}
+                                            className="form-control"
+                                            />
+                                            {index >0 && (
+                                                <button
+                                                type="button" 
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handelRemoveCorrectAnswer(index)}>
+                                                     Remove
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    
+                                    <button
+                                    type="button"
+                                    className="btn btn-outline-info"
+                                    onClick={handleAddCorrectAnswer}
+                                    >
+                                        Add Correct Answer
+                                    </button>
+                                  
+                                </div>
+                            )}
+
+                            {!correctAnswers.length && <p>Please enter at least one correct answer.</p>}
+                            <div className="btn-group">
+                                <button
+                                    type="submit"
+                                    className="btn btn-outline-success mr-2">
+                                    Save Question
+                                </button>
+                                {/* <Link
+                                    to={"/admin/"}
+                                    type="button"
+                                    className="btn btn-outline-success mr-2">
+                                    
+                                </Link> */}
+                            </div>
                         </form>
                     </div>
 
