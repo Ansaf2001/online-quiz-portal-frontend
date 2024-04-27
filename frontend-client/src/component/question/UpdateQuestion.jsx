@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
-import { getQuestionById } from '../../utils/QuizService'
-import { useParams } from "react-router-dom"
+import { getQuestionById, updateQuestion } from '../../../utils/QuizService'
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 
 const UpdateQuestion = () => {
+    const { id } = useParams()
+    const navigate = useNavigate()
     const [question, setQuestion] = useState("")
-  
     const[choices, setChoice] = useState([""])
     const[correctAnswers, setCorrectAnswers] = useState([""])
     const[isLoading, setIsLoading] = useState(true)
 
-    const {id} = useParams()
 
     useEffect(() =>{
         fetchQuestion()
@@ -105,7 +105,9 @@ const UpdateQuestion = () => {
                 </div>
                 <div className='btn-group'>
                     <button type="submit" className="btn btn-sm btn-outline-warning">Update Question</button>
-                    {/* Todo: add a link back to all questions  */}
+                    <Link to={"/all-quizzes"} className="btn btn-outline-primary mr-2">
+                    Back to all questions
+                    </Link>
                     <button type="reset" className="btn btn-secondary">Reset</button>
 
                 </div>
