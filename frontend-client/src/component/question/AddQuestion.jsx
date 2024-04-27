@@ -1,4 +1,6 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import { Link } from 'react-router-dom'
+import { createQuestion, getSubjects } from '../../../utils/QuizService'
 
 const AddQuestion = () => {
     const [question, setQuestion] = useState("")
@@ -246,12 +248,12 @@ const AddQuestion = () => {
                                     className="btn btn-outline-success mr-2">
                                     Save Question
                                 </button>
-                                {/* <Link
-                                    to={"/admin/"}
+                                <Link
+                                    to={"/all-quizzes/"}
                                     type="button"
                                     className="btn btn-outline-success mr-2">
-                                    
-                                </Link> */}
+                                    Back to Existing questions
+                                </Link>
                             </div>
                         </form>
                     </div>
